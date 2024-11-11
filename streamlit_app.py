@@ -25,7 +25,7 @@ def load_pdf_folder(folder_path):
     return product_data
 
 # Path to the folder containing PDF files
-pdf_folder_path = "/workspaces/chatbot-for-test/.products"
+pdf_folder_path = "/workspaces/chatbot-for-test/products"
 product_knowledge = load_pdf_folder(pdf_folder_path)
 
 # Streamlit app setup
