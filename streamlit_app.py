@@ -1,32 +1,5 @@
-import os
-import fitz  # PyMuPDF library for reading PDFs
 import streamlit as st
 from openai import OpenAI
-
-# Load and extract product data from all PDF files in a folder
-def load_pdf_folder(folder_path):
-    product_data = {}
-    for filename in os.listdir(folder_path):
-        if filename.endswith(".pdf"):
-            with fitz.open(os.path.join(folder_path, filename)) as pdf:
-                for page_num in range(len(pdf)):
-                    page = pdf[page_num]
-                    text = page.get_text()
-                    # Basic parsing; adjust based on PDF structure
-                    lines = text.splitlines()
-                    product_name, product_description = "", ""
-                    for line in lines:
-                        if line.startswith("Product Name:"):
-                            product_name = line.split(":")[1].strip()
-                        elif line.startswith("Description:"):
-                            product_description = line.split(":")[1].strip()
-                    if product_name and product_description:
-                        product_data[product_name] = product_description
-    return product_data
-
-# Path to the folder containing PDF files
-pdf_folder_path = "/workspaces/chatbot-for-test/products"
-product_knowledge = load_pdf_folder(pdf_folder_path)
 
 # Streamlit app setup
 st.title("FA Controls - Sales Inquiry GPT")
@@ -38,7 +11,8 @@ client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 if "openai_model" not in st.session_state:
     st.session_state["openai_model"] = "gpt-4o"
 if "messages" not in st.session_state:
-    st.session_state.messages = [   {"role": "system", "content": "You are a helpful sales representative for FA Controls. You provide detailed information about FA Controls' products and answer customer inquiries professionally."}
+    st.session_state.messages = [
+        {"role": "system", "content": "You are a helpful sales representative for FA Controls. You provide detailed information about FA Controls' products and answer customer inquiries professionally."}
     ]
 
 # Display chat history
@@ -48,6 +22,8 @@ for message in st.session_state.messages:
 
 # Function to check if a prompt is about a specific product
 def get_product_response(prompt):
+    # Placeholder for product knowledge dictionary, now empty
+    product_knowledge = {}
     for product, description in product_knowledge.items():
         if product.lower() in prompt.lower():
             return description
