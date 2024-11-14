@@ -15,10 +15,11 @@ if "messages" not in st.session_state:
         {"role": "system", "content": "You are a helpful sales representative for FA Controls. You provide detailed information about FA Controls' products and answer customer inquiries professionally."}
     ]
 
-# Display chat history
+# Display chat history, excluding system messages
 for message in st.session_state.messages:
-    with st.chat_message(message["role"]):
-        st.markdown(message["content"])
+    if message["role"] != "system":  # Skip system messages
+        with st.chat_message(message["role"]):
+            st.markdown(message["content"])
 
 # Function to check if a prompt is about a specific product
 def get_product_response(prompt):
