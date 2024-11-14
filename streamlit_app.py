@@ -36,9 +36,10 @@ client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
 # Initialize session state for model and messages
 if "openai_model" not in st.session_state:
-    st.session_state["openai_model"] = "gpt-4o-mini"
+    st.session_state["openai_model"] = "gpt-4o"
 if "messages" not in st.session_state:
-    st.session_state.messages = []
+    st.session_state.messages = [   {"role": "system", "content": "You are a helpful sales representative for FA Controls. You provide detailed information about FA Controls' products and answer customer inquiries professionally."}
+    ]
 
 # Display chat history
 for message in st.session_state.messages:
